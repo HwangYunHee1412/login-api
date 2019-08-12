@@ -5,8 +5,12 @@ var mongoose   = require('mongoose');
 var bodyParser = require('body-parser');
 
 // Database
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_DB_LOGIN_API, {useMongoClient: true});
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
+//mongoose.connect('mongodb://localhost/database', {useMongoClient: true});
+mongoose.connect('mongodb://localhost/database');
 var db = mongoose.connection;
 db.once('open', function () {
    console.log('DB connected!');
@@ -21,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'content-type, x-access-token'); //1
+  res.header('Access-Control-Allow-Headers', 'content-type, x-access-token'); //jwt(json web token)로 생성된 토큰은 header의 x-access-token 항목을 통해 전달
   next();
 });
 
